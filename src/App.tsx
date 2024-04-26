@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useAuth } from 'react-oidc-context'
+import { API_BASE_URL } from './environment';
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+    const auth = useAuth();
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    if (!auth.isAuthenticated) {
+        return <button onClick={() => void auth.signinRedirect()}>Log in</button>;
+    }
+
+    return (
+        <main>
+            <span>Authenticated!</span>
+
+            <button onClick={() => sendTestRequest(auth.user!.access_token)}>
+                Send test request
+            </button>
+
+            <button className="text" onClick={() => auth.signoutRedirect()}>Log out</button>
+        </main>
+    );
+}
+
+async function sendTestRequest(token: string) {
+    const res = await fetch(API_BASE_URL + '/biz/users?action=current-session', {
+        headers: { Authorization: 'Bearer ' + token }
+    });
+
+    if (res.ok) {
+        const user = await res.json();
+        window.alert('Current user: ' + (user.Name || user.UserName || user.Email));
+    } else {
+        window.alert('Error: ' + await res.text());
+    }
 }
 
 export default App
