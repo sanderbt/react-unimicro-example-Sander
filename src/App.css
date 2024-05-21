@@ -6,12 +6,18 @@
 }
 
 .logo {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 50px; /* Adjust the size as needed */
-  height: auto;
+  height: 7em;
+  width: auto;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+  margin-bottom: 4em;
 }
+
+.title {
+  margin-bottom: 1em; 
+}
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }

@@ -19,7 +19,7 @@ function App() {
         <Router>
             <div className="container mt-5">
                 <img src={logo} alt="Logo" className="logo" />
-                <h1>My Contacts</h1>
+                <h1 className="title">My Contacts</h1>
                 <div className="mb-3">
                     <Link to="/contacts" className="btn btn-primary">
                         Go to Contact List
