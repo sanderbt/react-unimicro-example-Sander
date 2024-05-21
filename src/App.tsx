@@ -12,7 +12,13 @@ function App() {
     const auth = useAuth();
 
     if (!auth.isAuthenticated) {
-        return <button onClick={() => void auth.signinRedirect()} className="btn btn-primary">Log in</button>;
+        return (
+            <div className="container mt-5">
+                <img src={logo} alt="Logo" className="logo" />
+                <h1 className="title">My Contacts</h1>
+                <button onClick={() => void auth.signinRedirect()} className="btn btn-primary">Log in</button>
+            </div>
+        );
     }
 
     return (
